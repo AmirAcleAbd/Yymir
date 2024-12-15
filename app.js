@@ -1,72 +1,94 @@
+// Content Loading Functions
 async function loadContent() {
-    try {
-        // This array will contain the names of your content files
-        const contentFiles = [
-            'about.txt'
-        ];
-        
-        const contentArea = document.querySelector('.content');
-        contentArea.innerHTML = ''; // Clear existing content
-        
-        // Create navigation links
-        const navLinks = document.querySelector('nav div');
-        navLinks.innerHTML = '<a href="#">Home</a>';
-        
-        for (let i = 0; i < contentFiles.length; i++) {
-            const fileName = contentFiles[i];
-            
-            // Add navigation link
-            const linkId = `post${i + 1}`;
-            navLinks.innerHTML += `<a href="#${linkId}">${formatTitle(fileName)}</a>`;
-            
-            try {
-                // Fetch content file
-                const response = await fetch(`content/${fileName}`);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const content = await response.text();
-                
-                const postDiv = document.createElement('div');
-                postDiv.className = 'post';
-                postDiv.id = linkId;
-                
-                // Add title
-                const title = document.createElement('h2');
-                title.textContent = formatTitle(fileName);
-                postDiv.appendChild(title);
-                
-                // Process paragraphs
-                const paragraphs = content.split('::').filter(p => p.trim());
-                paragraphs.forEach(p => {
-                    const cleanContent = p.split(':/:')[0].trim();
-                    if (cleanContent) {
-                        const para = document.createElement('p');
-                        para.textContent = cleanContent;
-                        postDiv.appendChild(para);
-                    }
-                });
-                
-                contentArea.appendChild(postDiv);
-                
-                // Add horizontal rule if not last post
-                if (i < contentFiles.length - 1) {
-                    const hr = document.createElement('hr');
-                    contentArea.appendChild(hr);
-                }
-            } catch (error) {
-                console.error(`Error loading ${fileName}:`, error);
-            }
-        }
-    } catch (error) {
-        console.error('Error loading content:', error);
-    }
+  try {
+      // Define the content files - for GitHub Pages we need to list them explicitly
+      const contentFiles = [
+          'con_big_don.txt'
+          // Add more files here as needed
+      ];
+      
+      const contentArea = document.querySelector('.content');
+      contentArea.innerHTML = ''; // Clear existing content
+      
+      // Create navigation links
+      const navLinks = document.querySelector('nav div');
+      navLinks.innerHTML = '<a href="#">Home</a>';
+      
+      for (let i = 0; i < contentFiles.length; i++) {
+          const fileName = contentFiles[i];
+          
+          // Add navigation link
+          const linkId = `post${i + 1}`;
+          navLinks.innerHTML += `<a href="#${linkId}">${formatTitle(fileName)}</a>`;
+          
+          // Prevent horizontal scrolling
+          document.addEventListener('wheel', (e) => {
+              if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+                  e.preventDefault();
+              }
+          }, { passive: false });
+
+          try {
+              // Fetch content file
+              console.log('Fetching:', `content/${fileName}`); // Debug log
+              const response = await fetch(`content/${fileName}`);
+              
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              
+              const content = await response.text();
+              console.log('Content loaded:', content); // Debug log
+              
+              const postDiv = document.createElement('div');
+              postDiv.className = 'post';
+              postDiv.id = linkId;
+              
+              // Add title
+              const title = document.createElement('h2');
+              title.textContent = formatTitle(fileName);
+              postDiv.appendChild(title);
+              
+              // Process paragraphs
+              const paragraphs = content.split('::').filter(p => p.trim());
+              paragraphs.forEach(p => {
+                  const cleanContent = p.split(':/:')[0].trim();
+                  if (cleanContent) {
+                      const para = document.createElement('p');
+                      para.textContent = cleanContent;
+                      postDiv.appendChild(para);
+                  }
+              });
+              
+              contentArea.appendChild(postDiv);
+              
+              // Always add a horizontal rule after each post
+              const hr = document.createElement('hr');
+              contentArea.appendChild(hr);
+              if (i < contentFiles.length - 1) {
+                  const hr = document.createElement('hr');
+                  contentArea.appendChild(hr);
+              }
+          } catch (error) {
+              console.error(`Error loading ${fileName}:`, error);
+              // Create error message in the content area
+              const errorDiv = document.createElement('div');
+              errorDiv.className = 'post error';
+              errorDiv.innerHTML = `<h2>Error Loading Content</h2><p>Could not load ${fileName}: ${error.message}</p>`;
+              contentArea.appendChild(errorDiv);
+          }
+      }
+  } catch (error) {
+      console.error('Error loading content:', error);
+  }
 }
 
 function formatTitle(fileName) {
-    return fileName
-        .replace('.txt', '')
-        .split('_')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+  return fileName
+      .replace('.txt', '')
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
 }
 
 // Tree Animation State
@@ -545,15 +567,16 @@ function ensureAngleInView(x, y, angle) {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadContent();
-    
-    document.querySelector('.toggle-mode').addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        ctx.fillStyle = getBackgroundColor();
-        ctx.fillRect(0, 0, state.canvasWidth, state.canvasHeight);
-    });
-    
-    window.addEventListener('resize', updateSize);
-    updateSize();
-    animationFrame = requestAnimationFrame(animate);
+  console.log('Document loaded, starting content load...'); // Debug log
+  await loadContent();
+  
+  document.querySelector('.toggle-mode').addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      ctx.fillStyle = getBackgroundColor();
+      ctx.fillRect(0, 0, state.canvasWidth, state.canvasHeight);
+  });
+  
+  window.addEventListener('resize', updateSize);
+  updateSize();
+  animationFrame = requestAnimationFrame(animate);
 });
