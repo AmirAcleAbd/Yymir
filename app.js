@@ -2,9 +2,7 @@ async function loadContent() {
     try {
         // This array will contain the names of your content files
         const contentFiles = [
-            'first_post.txt',
-            'second_post.txt'
-            // Add more file names as you create them
+            'about.txt'
         ];
         
         const contentArea = document.querySelector('.content');
@@ -549,11 +547,6 @@ function ensureAngleInView(x, y, angle) {
 document.addEventListener('DOMContentLoaded', async () => {
     await loadContent();
     
-    document.querySelector('.load-content').addEventListener('click', async () => {
-        console.log("poop")
-        await loadContent();
-    });
-
     document.querySelector('.toggle-mode').addEventListener('click', () => {
         document.body.classList.toggle('light-mode');
         ctx.fillStyle = getBackgroundColor();
