@@ -1,0 +1,82 @@
+/* Base styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    line-height: 1.7;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    background: #000;
+    color: #fff;
+  }
+  
+  body.light-mode {
+    background: #fff;
+    color: #000;
+  }
+  
+  /* Navigation */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: transparent;
+    padding: 1rem;
+    border-bottom: 1px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: inherit;
+    margin-right: 1rem;
+  }
+  
+  .toggle-mode {
+    cursor: pointer;
+    background: none;
+    border: 1px solid currentColor;
+    color: inherit;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+  
+  /* Content layout */
+  .content {
+    max-width: 650px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .post {
+    margin-bottom: 2rem;
+  }
+  
+  .post h2 {
+    font-size: 2em;
+    margin-bottom: 0.5rem;
+  }
+  
+  .post p {
+    margin-bottom: 1rem;
+  }
+  
+  hr {
+    border: none;
+    border-top: 1px solid currentColor;
+    margin: 2rem 0;
+  }
+  
+  /* Canvas styling */
+  canvas {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+  }
