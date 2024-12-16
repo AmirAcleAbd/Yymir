@@ -133,8 +133,8 @@ function updateSize() {
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     
-    //ctx.resetTransform();
-    //ctx.scale(dpr, dpr);
+    ctx.resetTransform();
+    ctx.scale(dpr, dpr);
     
     ctx.fillStyle = getBackgroundColor();
     ctx.fillRect(0, 0, state.canvasWidth, state.canvasHeight);
