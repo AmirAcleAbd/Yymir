@@ -1,0 +1,8 @@
+canvas {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    min-height: 100vh; /* Ensures minimum full viewport height */
+    z-index: 1;
+    pointer-events: none;
+}
