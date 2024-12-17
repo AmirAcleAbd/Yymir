@@ -258,12 +258,6 @@ function formatTitle(fileName) {
       });
 
     });
-
-
-    const newBranch = generateNewBranch(branch, branch.progress);
-    state.branchPoints.push(newBranch);
-    removeOldestPointByBirthOrder(oldestBirth);
-    finalizeRemovals();
   }
 
   function generateConnections() {
